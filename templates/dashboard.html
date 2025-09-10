@@ -1,0 +1,36 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Dashboard</title>
+    <link rel="stylesheet" href="/static/css/style.css">
+  </head>
+  <body>
+    <div class="nav">
+      <a href="/dashboard">Dashboard</a> |
+      <a href="/buy">Buy Ticket</a> |
+      <a href="/redeem">Redeem</a> |
+      <a href="/status">Status</a> |
+      <a href="/history">History</a> |
+      <a href="/logout">Logout</a>
+    </div>
+    <div class="container">
+      <h1>Welcome to FlyDreamAir Loyalty</h1>
+      <div id="me" class="card"></div>
+    </div>
+    <script>
+      async function loadMe(){
+        const r = await fetch('/api/me');
+        const j = await r.json();
+        if(!j.ok){ window.location='/login'; return; }
+        const u = j.user;
+        document.getElementById('me').innerHTML = `<p><strong>${u.username}</strong></p>
+          <p>Balance: $${u.balance.toFixed(2)}</p>
+          <p>Points: ${u.points_balance}</p>
+          <p>Status: ${u.status}</p>
+          <p>Tier points this year: ${u.tier_points_year}</p>`;
+      }
+      loadMe();
+    </script>
+  </body>
+</html>
